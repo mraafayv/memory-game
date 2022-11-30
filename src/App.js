@@ -3,12 +3,12 @@ import "./App.css";
 import SingleCard from "./components/SingleCard";
 
 const cardImages = [
-  { src: "/img/helmet-1.png" },
-  { src: "/img/potion-1.png" },
-  { src: "/img/ring-1.png" },
-  { src: "/img/scroll-1.png" },
-  { src: "/img/shield-1.png" },
-  { src: "/img/sword-1.png" },
+  { src: "/img/helmet-1.png", matched: false },
+  { src: "/img/potion-1.png", matched: false },
+  { src: "/img/ring-1.png", matched: false },
+  { src: "/img/scroll-1.png", matched: false },
+  { src: "/img/shield-1.png", matched: false },
+  { src: "/img/sword-1.png", matched: false },
 ];
 
 function App() {
@@ -37,16 +37,22 @@ function App() {
     // console.log(card);
   };
 
-  console.log(choiceOne, choiceTwo);
+  // console.log(choiceOne, choiceTwo);
 
   const compareChoices = (choiceOne, choiceTwo) => {
     if (choiceOne.src === choiceTwo.src) {
-      console.log("Matched");
+      setCards((prevCards) => {
+        return prevCards.map((card) => {
+          if (card.src === choiceOne.src) {
+            return { ...card, matched: true };
+          } else {
+            return card;
+          }
+        });
+      });
 
       resetTurns();
     } else {
-      console.log("Cards doesn't match");
-
       resetTurns();
     }
   };
@@ -54,7 +60,7 @@ function App() {
   function resetTurns() {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setTurns(turns + 1);
+    setTurns((prevTurns) => prevTurns + 1);
   }
 
   return (
