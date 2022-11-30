@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import SingleCard from "./components/SingleCard";
 
@@ -25,26 +25,37 @@ function App() {
     setCards(shuffledCards);
     setTurns(0);
   };
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      compareChoices(choiceOne, choiceTwo);
+      // setTurns(turns+1);
+    }
+  }, [choiceOne, choiceTwo]);
 
   const handleChoice = (card) => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
     // console.log(card);
-    console.log(choiceOne, choiceTwo);
-    if ((choiceOne && choiceTwo) != null) {
-      compareChoices(choiceOne, choiceTwo);
+  };
+
+  console.log(choiceOne, choiceTwo);
+
+  const compareChoices = (choiceOne, choiceTwo) => {
+    if (choiceOne.src === choiceTwo.src) {
+      console.log("Matched");
+
+      resetTurns();
+    } else {
+      console.log("Cards doesn't match");
+
+      resetTurns();
     }
   };
 
-  const compareChoices = (choiceOne, choiceTwo) => {
-      console.log("Comparing choices....")
-    if (choiceOne.src === choiceTwo.src) {
-      console.log("Matched");
-    }
-    else{
-      setChoiceOne(null);
-      setChoiceTwo(null);
-    }
-  };
+  function resetTurns() {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(turns + 1);
+  }
 
   return (
     <div className="App">
@@ -56,6 +67,8 @@ function App() {
           <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
         ))}
       </div>
+
+      <div className="turns">Turns: {turns}</div>
     </div>
   );
 }
