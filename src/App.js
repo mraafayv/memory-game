@@ -28,6 +28,7 @@ function App() {
     setCards(shuffledCards);
     setTurns(0);
   };
+  
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       setDisabled(true);
